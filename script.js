@@ -1,4 +1,4 @@
-document.getElementById('lead-form').addEventListener('submit', async function(e) {
+document.getElementById('lead-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const nome = document.getElementById('nome').value;
     const email = document.getElementById('email').value;
@@ -6,25 +6,24 @@ document.getElementById('lead-form').addEventListener('submit', async function(e
     const mensagem = document.getElementById('mensagem').value;
     const statusDiv = document.getElementById('form-status');
 
-    statusDiv.innerHTML = 'Enviando...';
+    statusDiv.innerHTML = '🔄 Preparando contato...';
 
-    // Opção 1: enviar para um webhook ou e-mail usando Fetch (exemplo com Google Forms ou zapier)
-    // Por enquanto, apenas simulamos e redirecionamos para WhatsApp.
-    const texto = `Olá! Meu nome é ${nome}. Email: ${email}. Telefone: ${telefone}. Mensagem: ${mensagem}`;
-    const whatsappUrl = `https://wa.me/5511999999999?text=${encodeURIComponent(texto)}`;
-    window.open(whatsappUrl, '_blank');
-    statusDiv.innerHTML = 'Redirecionando para o WhatsApp...';
+    const texto = `*NOVO LEAD - SITE CORPORATIVO*%0A%0A*Nome:* ${nome}%0A*E-mail:* ${email}%0A*WhatsApp:* ${telefone}%0A*Mensagem:* ${mensagem}%0A%0A*Origem:* site-perfeito (Matheus Ribeiro)`;
+    const numeroWhatsApp = '5511999999999'; // Substitua pelo seu número real com DDD
+    const url = `https://wa.me/${numeroWhatsApp}?text=${texto}`;
+
+    window.open(url, '_blank');
+    statusDiv.innerHTML = '✅ Redirecionando para o WhatsApp... Em breve entraremos em contato.';
     
-    // Aqui você pode adicionar lógica para salvar em uma API (opcional)
-    // Exemplo: enviar para seu endpoint /usuarios (POST) – se quiser armazenar leads
-    /*
-    try {
-        const response = await fetch('https://api-nova-0zum.onrender.com/usuarios', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome, idade: 0 }) // ajuste conforme necessidade
-        });
-        if(response.ok) console.log('Lead salvo');
-    } catch(err) { console.log(err); }
-    */
+    // Limpa o formulário (opcional)
+    document.getElementById('lead-form').reset();
+    setTimeout(() => { statusDiv.innerHTML = ''; }, 5000);
+});
+
+// Botão flutuante do WhatsApp também redireciona
+document.getElementById('whatsapp-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    const texto = `Olá! Gostaria de saber mais sobre os serviços de engenharia e segurança.`;
+    const url = `https://wa.me/5511999999999?text=${encodeURIComponent(texto)}`;
+    window.open(url, '_blank');
 });
