@@ -6,24 +6,21 @@ document.getElementById('lead-form').addEventListener('submit', function(e) {
     const mensagem = document.getElementById('mensagem').value;
     const statusDiv = document.getElementById('form-status');
 
-    statusDiv.innerHTML = '🔄 Preparando contato...';
+    statusDiv.innerHTML = '🔍 Enviando para análise de elegibilidade...';
 
-    const texto = `*NOVO LEAD - SITE CORPORATIVO*%0A%0A*Nome:* ${nome}%0A*E-mail:* ${email}%0A*WhatsApp:* ${telefone}%0A*Mensagem:* ${mensagem}%0A%0A*Origem:* site-perfeito (Matheus Ribeiro)`;
-    const numeroWhatsApp = '5511999999999'; // Substitua pelo seu número real com DDD
+    const texto = `*NOVO LEAD - ORION GROUP (LISTA DE ESPERA)*%0A%0A*Nome:* ${nome}%0A*E-mail:* ${email}%0A*WhatsApp:* ${telefone}%0A*Mensagem:* ${mensagem}%0A%0A*Solicita análise de perfil para projetos exclusivos*`;
+    const numeroWhatsApp = '5511999999999'; // Substitua pelo seu número real
     const url = `https://wa.me/${numeroWhatsApp}?text=${texto}`;
 
     window.open(url, '_blank');
-    statusDiv.innerHTML = '✅ Redirecionando para o WhatsApp... Em breve entraremos em contato.';
-    
-    // Limpa o formulário (opcional)
+    statusDiv.innerHTML = '✅ Lead enviado. Em até 48h retornaremos se seu perfil for compatível.';
     document.getElementById('lead-form').reset();
-    setTimeout(() => { statusDiv.innerHTML = ''; }, 5000);
+    setTimeout(() => { statusDiv.innerHTML = ''; }, 6000);
 });
 
-// Botão flutuante do WhatsApp também redireciona
 document.getElementById('whatsapp-btn').addEventListener('click', function(e) {
     e.preventDefault();
-    const texto = `Olá! Gostaria de saber mais sobre os serviços de engenharia e segurança.`;
+    const texto = `Olá, gostaria de solicitar análise de perfil para projetos exclusivos do Orion Group.`;
     const url = `https://wa.me/5511999999999?text=${encodeURIComponent(texto)}`;
     window.open(url, '_blank');
 });

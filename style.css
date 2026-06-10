@@ -14,7 +14,6 @@ body {
 .gold-bar {
     height: 4px;
     background: linear-gradient(90deg, #c49a6c, #e8c28e, #c49a6c);
-    width: 100%;
 }
 
 .container {
@@ -97,21 +96,19 @@ header h1 {
 .btn-whatsapp:hover {
     background: #e8c28e;
     transform: scale(1.02);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-.servicos, .diferencial, .contato {
+.servicos, .portfolio, .diferencial, .acesso-restrito, .contato {
     padding: 4rem 0;
 }
 
-.servicos h3, .diferencial h3, .contato h3 {
+.servicos h3, .portfolio h3, .diferencial h3, .acesso-restrito h3, .contato h3 {
     font-family: 'Cormorant Garamond', serif;
     font-size: 2.2rem;
     text-align: center;
     margin-bottom: 2.5rem;
     color: #2c221b;
     font-weight: 600;
-    letter-spacing: -0.5px;
 }
 
 .cards {
@@ -134,8 +131,8 @@ header h1 {
 
 .card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
     border-color: #c49a6c;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
 }
 
 .icon {
@@ -147,11 +144,46 @@ header h1 {
     font-size: 1.3rem;
     margin-bottom: 0.8rem;
     color: #1e2a2e;
-    font-weight: 600;
 }
 
-.card p {
-    font-size: 0.95rem;
+.portfolio-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.portfolio-item {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    width: 280px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    transition: 0.3s;
+    border: 1px solid #e6d5b8;
+}
+
+.portfolio-item:hover {
+    transform: translateY(-5px);
+    border-color: #c49a6c;
+}
+
+.portfolio-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.portfolio-item h4 {
+    font-size: 1.2rem;
+    margin: 1rem 1rem 0.5rem;
+    color: #1e2a2e;
+}
+
+.portfolio-item p {
+    font-size: 0.9rem;
+    margin: 0 1rem 1rem;
     color: #5a4a3a;
 }
 
@@ -174,6 +206,21 @@ header h1 {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.acesso-restrito {
+    background: #fff3e0;
+    border-radius: 40px;
+    margin: 1rem auto;
+    width: 90%;
+    text-align: center;
+    border: 1px dashed #c49a6c;
+}
+
+.cadeado {
+    font-size: 3rem;
+    margin-top: 1rem;
+    opacity: 0.7;
 }
 
 .contato form {
@@ -208,7 +255,6 @@ button {
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s;
-    font-size: 1rem;
 }
 
 button:hover {
@@ -233,65 +279,5 @@ footer {
 @media (max-width: 768px) {
     header h1 { font-size: 2.2rem; }
     .hero h2 { font-size: 1.8rem; }
-    .cards { flex-direction: column; align-items: center; }
-}
-
-/* Novos elementos: selo, valores, card destaque */
-.diferencial-marca {
-    background: #fef0e0;
-    padding: 1rem 0;
-    text-align: center;
-    border-bottom: 1px solid #e6d5b8;
-}
-.selo {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    font-weight: 600;
-    color: #1e2a2e;
-    font-size: 1rem;
-    flex-wrap: wrap;
-}
-.selo span {
-    background: white;
-    padding: 0.4rem 1rem;
-    border-radius: 30px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-.card.destaque {
-    border: 2px solid #c49a6c;
-    background: #fff9f0;
-    transform: scale(1.02);
-}
-.valores {
-    background: #fff9f0;
-    padding: 3rem 0;
-    margin: 2rem 0;
-    border-radius: 40px;
-}
-.valores h3 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 2rem;
-}
-.valores-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2rem;
-}
-.valor {
-    background: white;
-    padding: 1rem 1.5rem;
-    border-radius: 50px;
-    font-size: 1rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    border: 1px solid #e6d5b8;
-    max-width: 280px;
-    text-align: center;
-}
-@media (max-width: 768px) {
-    .selo { flex-direction: column; gap: 0.5rem; }
-    .valores-grid { flex-direction: column; align-items: center; }
+    .cards, .portfolio-grid { flex-direction: column; align-items: center; }
 }
