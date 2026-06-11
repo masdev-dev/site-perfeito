@@ -9,7 +9,7 @@ document.getElementById('lead-form').addEventListener('submit', function(e) {
     statusDiv.innerHTML = '🔍 Enviando para análise de elegibilidade...';
 
     const texto = `*NOVO LEAD - ORION GROUP (LISTA DE ESPERA)*%0A%0A*Nome:* ${nome}%0A*E-mail:* ${email}%0A*WhatsApp:* ${telefone}%0A*Mensagem:* ${mensagem}%0A%0A*Solicita análise de perfil para projetos exclusivos*`;
-    const numeroWhatsApp = '5511999999999'; // Substitua pelo seu número real
+    const numeroWhatsApp = '5512981572766'; // Substitua pelo seu número real
     const url = `https://wa.me/${numeroWhatsApp}?text=${texto}`;
 
     window.open(url, '_blank');
@@ -21,6 +21,13 @@ document.getElementById('lead-form').addEventListener('submit', function(e) {
 document.getElementById('whatsapp-btn').addEventListener('click', function(e) {
     e.preventDefault();
     const texto = `Olá, gostaria de solicitar análise de perfil para projetos exclusivos do Orion Group.`;
-    const url = `https://wa.me/5511999999999?text=${encodeURIComponent(texto)}`;
+    const url = `https://wa.me/5512981572766?text=${encodeURIComponent(texto)}`;
     window.open(url, '_blank');
+});
+
+// Rolagem suave para a seção "método"
+document.querySelector('.btn-metodo').addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector('#metodo');
+    target.scrollIntoView({ behavior: 'smooth' });
 });
