@@ -5,6 +5,12 @@ document.getElementById('lead-form').addEventListener('submit', async function(e
     const mensagem = document.getElementById('mensagem').value;
     const statusDiv = document.getElementById('form-status');
 
+    if (!nome || !email || !mensagem) {
+        statusDiv.innerHTML = '❌ Preencha todos os campos.';
+        setTimeout(() => { statusDiv.innerHTML = ''; }, 3000);
+        return;
+    }
+
     statusDiv.innerHTML = '🔍 Enviando sua solicitação...';
 
     try {
@@ -17,6 +23,8 @@ document.getElementById('lead-form').addEventListener('submit', async function(e
             statusDiv.innerHTML = '✅ Solicitação recebida! Em até 48h nossa equipe analisará e entrará em contato pelo e-mail informado.';
             document.getElementById('lead-form').reset();
         } else {
+            const erro = await response.text();
+            console.error(erro);
             statusDiv.innerHTML = '❌ Erro ao enviar. Tente novamente ou contate-nos diretamente pelo WhatsApp.';
         }
     } catch (err) {
