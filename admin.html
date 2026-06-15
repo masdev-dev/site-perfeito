@@ -3,89 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Admin - Orion Group</title>
+    <title>Painel Administrativo - Orion Group</title>
     <style>
-        body { font-family: 'Montserrat', sans-serif; background: #1e2a2e; color: #fdf6e3; margin: 0; padding: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; background: #2c3e3f; padding: 20px; border-radius: 20px; }
-        h1 { color: #c49a6c; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #c49a6c; padding: 10px; text-align: left; vertical-align: top; }
+        body { font-family: monospace; background: #1e2a2e; color: #fdf6e3; padding: 2rem; }
+        table { width: 100%; border-collapse: collapse; background: #2c3e2e; }
+        th, td { border: 1px solid #c49a6c; padding: 8px; text-align: left; }
         th { background: #c49a6c; color: #1e2a2e; }
-        td { background: #3a4a4b; }
-        .login { max-width: 400px; margin: 100px auto; text-align: center; }
-        input, button { padding: 10px; margin: 5px; border-radius: 8px; border: none; }
-        button { background: #c49a6c; color: #1e2a2e; cursor: pointer; font-weight: bold; }
-        .erro { color: #ff9999; }
+        input, button { padding: 8px; margin: 10px 0; }
+        .login { margin-bottom: 20px; }
+        .erro { color: #ffaaaa; }
     </style>
 </head>
 <body>
-<div class="container" id="app">
-    <h1>Painel Administrativo - Orion Group</h1>
-    <div id="conteudo">
-        <!-- Formulário de login ou lista de leads -->
+    <h1>Painel de Leads - Orion Group</h1>
+    <div id="login">
+        <label>Senha: <input type="password" id="senha"></label>
+        <button id="btn-login">Acessar</button>
     </div>
-</div>
+    <div id="conteudo" style="display:none;">
+        <h2>Leads Recebidos</h2>
+        <div id="tabela"></div>
+    </div>
+    <div id="erro" class="erro"></div>
 
-<script>
-    const API_URL = 'https://api-nova-0zum.onrender.com/admin/leads';
-
-    function mostrarLogin() {
-        document.getElementById('conteudo').innerHTML = `
-            <div class="login">
-                <h2>Acesso restrito</h2>
-                <input type="password" id="senha" placeholder="Digite a senha administrativa">
-                <br>
-                <button onclick="carregarLeads()">Entrar</button>
-            </div>
-        `;
-    }
-
-    window.carregarLeads = async function() {
-        const senha = document.getElementById('senha').value;
-        const url = `${API_URL}?senha=${encodeURIComponent(senha)}`;
-        const statusDiv = document.getElementById('conteudo');
-        statusDiv.innerHTML = '<p>Carregando...</p>';
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                if (response.status === 401) throw new Error('Senha incorreta');
-                throw new Error('Erro ao carregar leads');
+    <script>
+        const apiUrl = 'https://api-nova-0zum.onrender.com/admin/leads';
+        document.getElementById('btn-login').addEventListener('click', async () => {
+            const senha = document.getElementById('senha').value;
+            const erroDiv = document.getElementById('erro');
+            erroDiv.innerHTML = '';
+            try {
+                const response = await fetch(`${apiUrl}?senha=${encodeURIComponent(senha)}`);
+                if (!response.ok) {
+                    if (response.status === 401) throw new Error('Senha incorreta');
+                    throw new Error('Erro ao buscar dados');
+                }
+                const leads = await response.json();
+                document.getElementById('login').style.display = 'none';
+                document.getElementById('conteudo').style.display = 'block';
+                const tabela = document.getElementById('tabela');
+                if (leads.length === 0) {
+                    tabela.innerHTML = '<p>Nenhum lead cadastrado ainda.</p>';
+                    return;
+                }
+                let html = '<table><th>ID</th><th>Nome</th><th>Email</th><th>Mensagem</th><th>Status</th><th>Data</th></tr>';
+                leads.forEach(lead => {
+                    html += `<tr>
+                        <td>${lead.id}</td>
+                        <td>${escapeHtml(lead.nome)}</td><td>${escapeHtml(lead.email)}</td><td>${escapeHtml(lead.mensagem)}</td><td>${lead.status}</td><td>${new Date(lead.criado_em).toLocaleString()}</td>
+                    </tr>`;
+                });
+                html += '</table>';
+                tabela.innerHTML = html;
+            } catch (err) {
+                erroDiv.innerHTML = err.message;
             }
-            const leads = await response.json();
-            if (leads.length === 0) {
-                statusDiv.innerHTML = '<p>Nenhum lead cadastrado ainda.</p>';
-                return;
-            }
-            let html = '<table><tr><th>ID</th><th>Nome</th><th>Email</th><th>Telefone</th><th>Mensagem</th><th>Status</th><th>Data</th></tr>';
-            leads.forEach(lead => {
-                html += `<tr>
-                    <td>${lead.id}</td>
-                    <td>${escapeHtml(lead.nome)}</td>
-                    <td>${escapeHtml(lead.email)}</td>
-                    <td>${escapeHtml(lead.telefone || '')}</td>
-                    <td>${escapeHtml(lead.mensagem || '')}</td>
-                    <td>${escapeHtml(lead.status)}</td>
-                    <td>${new Date(lead.criado_em).toLocaleString()}</td>
-                </tr>`;
-            });
-            html += '</table>';
-            statusDiv.innerHTML = html;
-        } catch (err) {
-            statusDiv.innerHTML = `<div class="erro">❌ ${err.message}</div><button onclick="mostrarLogin()">Tentar novamente</button>`;
-        }
-    };
-
-    function escapeHtml(text) {
-        if (!text) return '';
-        return text.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
         });
-    }
-
-    mostrarLogin();
-</script>
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+    </script>
 </body>
 </html>
