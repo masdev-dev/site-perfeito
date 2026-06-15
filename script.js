@@ -9,7 +9,7 @@ document.getElementById('lead-form').addEventListener('submit', function(e) {
     statusDiv.innerHTML = '🔍 Enviando para análise de elegibilidade...';
 
     const texto = `*NOVO LEAD - ORION GROUP (LISTA DE ESPERA)*%0A%0A*Nome:* ${nome}%0A*E-mail:* ${email}%0A*WhatsApp:* ${telefone}%0A*Mensagem:* ${mensagem}%0A%0A*Solicita análise de perfil para projetos exclusivos*`;
-    const numeroWhatsApp = '5512981572766'; // Substitua pelo seu número real
+    const numeroWhatsApp = '5512981572766';
     const url = `https://wa.me/${numeroWhatsApp}?text=${texto}`;
 
     window.open(url, '_blank');
