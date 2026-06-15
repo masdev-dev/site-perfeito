@@ -7,31 +7,38 @@ document.getElementById('lead-form').addEventListener('submit', async function(e
 
     if (!nome || !email || !mensagem) {
         statusDiv.innerHTML = '❌ Preencha todos os campos.';
-        setTimeout(() => { statusDiv.innerHTML = ''; }, 3000);
+        setTimeout(() => statusDiv.innerHTML = '', 3000);
         return;
     }
 
     statusDiv.innerHTML = '🔍 Enviando sua solicitação...';
 
+    const apiUrl = 'https://api-nova-0zum.onrender.com/leads';
+    const dados = { nome, email, telefone: '', mensagem };
+
     try {
-        const response = await fetch('https://api-nova-0zum.onrender.com/leads', {
+        console.log('Enviando para:', apiUrl, dados);
+        const response = await fetch(apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome, email, telefone: '', mensagem })
+            body: JSON.stringify(dados)
         });
+        console.log('Resposta:', response.status);
         if (response.ok) {
+            const resultado = await response.json();
+            console.log('Lead salvo:', resultado);
             statusDiv.innerHTML = '✅ Solicitação recebida! Em até 48h nossa equipe analisará e entrará em contato pelo e-mail informado.';
             document.getElementById('lead-form').reset();
         } else {
             const erro = await response.text();
-            console.error(erro);
-            statusDiv.innerHTML = '❌ Erro ao enviar. Tente novamente ou contate-nos diretamente pelo WhatsApp.';
+            console.error('Erro do servidor:', erro);
+            statusDiv.innerHTML = '❌ Erro ao enviar. Tente novamente mais tarde.';
         }
     } catch (err) {
-        console.error(err);
+        console.error('Erro de rede ou CORS:', err);
         statusDiv.innerHTML = '❌ Erro de conexão. Tente novamente mais tarde.';
     }
-    setTimeout(() => { statusDiv.innerHTML = ''; }, 8000);
+    setTimeout(() => statusDiv.innerHTML = '', 8000);
 });
 
 document.getElementById('whatsapp-btn').addEventListener('click', function(e) {
