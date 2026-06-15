@@ -5,13 +5,13 @@ document.getElementById('lead-form').addEventListener('submit', async function(e
     const mensagem = document.getElementById('mensagem').value;
     const statusDiv = document.getElementById('form-status');
 
-    statusDiv.innerHTML = '🔍 Enviando solicitação...';
+    statusDiv.innerHTML = '🔍 Enviando sua solicitação...';
 
     try {
         const response = await fetch('https://api-nova-0zum.onrender.com/leads', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome, email, mensagem, telefone: '' })
+            body: JSON.stringify({ nome, email, telefone: '', mensagem })
         });
         if (response.ok) {
             statusDiv.innerHTML = '✅ Solicitação recebida! Em até 48h nossa equipe analisará e entrará em contato pelo e-mail informado.';
