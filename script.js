@@ -11,34 +11,30 @@ document.getElementById('lead-form').addEventListener('submit', async function(e
         return;
     }
 
-    statusDiv.innerHTML = '🔍 Enviando sua solicitação...';
+    statusDiv.innerHTML = '🔍 Enviando solicitação...';
 
-    const apiUrl = 'https://api-nova-0zum.onrender.com/leads';
-    const dados = { nome, email, telefone: '', mensagem };
+    const API_URL = 'https://api-nova-0zum.onrender.com/leads';
 
     try {
-        console.log('Enviando para:', apiUrl, dados);
-        const response = await fetch(apiUrl, {
+        const resposta = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dados)
+            body: JSON.stringify({ nome, email, telefone: '', mensagem })
         });
-        console.log('Resposta:', response.status);
-        if (response.ok) {
-            const resultado = await response.json();
-            console.log('Lead salvo:', resultado);
+
+        if (resposta.ok) {
             statusDiv.innerHTML = '✅ Solicitação recebida! Em até 48h nossa equipe analisará e entrará em contato pelo e-mail informado.';
             document.getElementById('lead-form').reset();
         } else {
-            const erro = await response.text();
-            console.error('Erro do servidor:', erro);
+            const erro = await resposta.text();
+            console.error('Erro servidor:', erro);
             statusDiv.innerHTML = '❌ Erro ao enviar. Tente novamente mais tarde.';
         }
     } catch (err) {
-        console.error('Erro de rede ou CORS:', err);
+        console.error('Erro de rede/CORS:', err);
         statusDiv.innerHTML = '❌ Erro de conexão. Tente novamente mais tarde.';
     }
-    setTimeout(() => statusDiv.innerHTML = '', 8000);
+    setTimeout(() => { statusDiv.innerHTML = ''; }, 8000);
 });
 
 document.getElementById('whatsapp-btn').addEventListener('click', function(e) {
